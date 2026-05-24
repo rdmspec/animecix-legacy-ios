@@ -26,3 +26,4 @@ Claude Legacy is a lightweight native iOS app that wraps claude.ai in a `WKWebVi
 | Device | iOS Version | Status |
 |--------|-------------|--------|
 | iPhone 13 | 15.5 | ✅ Verified |
+| iPad 7 | 13.5.1 | ⚠️ UI issues, a bit slow |
