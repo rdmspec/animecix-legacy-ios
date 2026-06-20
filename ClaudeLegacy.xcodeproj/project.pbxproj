@@ -19,9 +19,9 @@
 		CEADC8452F5E8F29000F74EA /* ClaudeLegacyUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = CEADC8442F5E8F29000F74EA /* ClaudeLegacyUITests.m */; };
 		CEADC8472F5E8F29000F74EA /* ClaudeLegacyUITestsLaunchTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CEADC8462F5E8F29000F74EA /* ClaudeLegacyUITestsLaunchTests.m */; };
 		CEADC8662F5E8F29000F74EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CEADC82E2F5E8F29000F74EA /* Assets.xcassets */; };
-		E90CBB982FD7F58500ED8DC9 /* legacy-transpiler.js in Resources */ = {isa = PBXBuildFile; fileRef = E90CBB972FD7F58500ED8DC9 /* legacy-transpiler.js */; };
 		E92D5D8E2FC17322005460E8 /* patch.js in Resources */ = {isa = PBXBuildFile; fileRef = CEADC85D2F5E8F29000F74EA /* patch.js */; };
 		E92D5DAA2FC32429005460E8 /* MediaQueryList.addEventListener.js in Resources */ = {isa = PBXBuildFile; fileRef = E92D5DA92FC32429005460E8 /* MediaQueryList.addEventListener.js */; };
+		E97A84F22FE660B200098C45 /* legacy-transpiler.js in Resources */ = {isa = PBXBuildFile; fileRef = E97A84F12FE660B200098C45 /* legacy-transpiler.js */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,8 +76,8 @@
 		CEADC8442F5E8F29000F74EA /* ClaudeLegacyUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClaudeLegacyUITests.m; sourceTree = "<group>"; };
 		CEADC8462F5E8F29000F74EA /* ClaudeLegacyUITestsLaunchTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ClaudeLegacyUITestsLaunchTests.m; sourceTree = "<group>"; };
 		CEADC85D2F5E8F29000F74EA /* patch.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = patch.js; sourceTree = "<group>"; };
-		E90CBB972FD7F58500ED8DC9 /* legacy-transpiler.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "legacy-transpiler.js"; sourceTree = "<group>"; };
 		E92D5DA92FC32429005460E8 /* MediaQueryList.addEventListener.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = MediaQueryList.addEventListener.js; sourceTree = "<group>"; };
+		E97A84F12FE660B200098C45 /* legacy-transpiler.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "legacy-transpiler.js"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,7 +142,7 @@
 				CEADC82E2F5E8F29000F74EA /* Assets.xcassets */,
 				CEADC82F2F5E8F29000F74EA /* Info.plist */,
 				E92D5DA92FC32429005460E8 /* MediaQueryList.addEventListener.js */,
-				E90CBB972FD7F58500ED8DC9 /* legacy-transpiler.js */,
+				E97A84F12FE660B200098C45 /* legacy-transpiler.js */,
 				CEADC85D2F5E8F29000F74EA /* patch.js */,
 				CEADC8302F5E8F29000F74EA /* main.m */,
 			);
@@ -270,7 +270,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E90CBB982FD7F58500ED8DC9 /* legacy-transpiler.js in Resources */,
+				E97A84F22FE660B200098C45 /* legacy-transpiler.js in Resources */,
 				CE123A592F5EDE2C008A1A3A /* Polyfills in Resources */,
 				CEADC82D2F5E8F26000F74EA /* Main.storyboard in Resources */,
 				E92D5D8E2FC17322005460E8 /* patch.js in Resources */,
@@ -477,7 +477,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = R743P2D925;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ClaudeLegacy/Info.plist;
@@ -492,7 +492,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.6;
+				MARKETING_VERSION = 1.0.7;
 				OTHER_LDFLAGS = (
 					"-framework",
 					SafariServices,
@@ -512,7 +512,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = R743P2D925;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ClaudeLegacy/Info.plist;
@@ -527,7 +527,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.6;
+				MARKETING_VERSION = 1.0.7;
 				OTHER_LDFLAGS = (
 					"-framework",
 					SafariServices,

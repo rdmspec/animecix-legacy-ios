@@ -7309,25 +7309,129 @@ var LegacyTranspiler = (() => {
   }
 
   // src/transforms/removeLookbehind.ts
-  var LOOKBEHIND_RE = /\(\?<[=!]([^()]*(?:\([^()]*\))*[^()]*)\)/g;
-  function stripStringPattern(args) {
-    const pattern = args[0];
-    if (!pattern) return;
-    if (pattern.type === "Literal" && typeof pattern.value === "string") {
-      const stripped = pattern.value.replace(LOOKBEHIND_RE, "");
-      if (stripped === pattern.value) return;
-      pattern.value = stripped;
-      pattern.raw = JSON.stringify(stripped);
-      return;
-    }
-    if (pattern.type === "TemplateLiteral") {
-      for (const quasi of pattern.quasis) {
-        quasi.value.raw = quasi.value.raw.replace(LOOKBEHIND_RE, "");
-        if (quasi.value.cooked != null) {
-          quasi.value.cooked = quasi.value.cooked.replace(LOOKBEHIND_RE, "");
-        }
+  var EXPR_PLACEHOLDER = "\uFFFF";
+  function findGroupEnd(source, start) {
+    let depth = 0;
+    let inClass = false;
+    for (let i = start; i < source.length; i++) {
+      const c = source[i];
+      if (c === "\\") {
+        i++;
+        continue;
+      }
+      if (inClass) {
+        if (c === "]") inClass = false;
+        continue;
+      }
+      if (c === "[") {
+        inClass = true;
+        continue;
+      }
+      if (c === "(") {
+        depth++;
+        continue;
+      }
+      if (c === ")") {
+        depth--;
+        if (depth === 0) return i;
       }
     }
+    return -1;
+  }
+  function lookbehindKeepMask(source) {
+    const keep = new Array(source.length).fill(true);
+    let inClass = false;
+    let i = 0;
+    while (i < source.length) {
+      const c = source[i];
+      if (c === "\\") {
+        i += 2;
+        continue;
+      }
+      if (inClass) {
+        if (c === "]") inClass = false;
+        i++;
+        continue;
+      }
+      if (c === "[") {
+        inClass = true;
+        i++;
+        continue;
+      }
+      if (c === "(" && source[i + 1] === "?" && source[i + 2] === "<" && (source[i + 3] === "=" || source[i + 3] === "!")) {
+        const end = findGroupEnd(source, i);
+        if (end === -1) {
+          i++;
+          continue;
+        }
+        for (let j = i; j <= end; j++) keep[j] = false;
+        i = end + 1;
+        continue;
+      }
+      i++;
+    }
+    return keep;
+  }
+  function applyMask(source, keep) {
+    let out = "";
+    for (let i = 0; i < source.length; i++) if (keep[i]) out += source[i];
+    return out;
+  }
+  function rawFromCooked(cooked) {
+    return cooked.replace(/\\/g, "\\\\").replace(/`/g, "\\`").replace(/\$\{/g, "\\${");
+  }
+  function stripLiteralPattern(node) {
+    if (typeof node.value !== "string") return;
+    const keep = lookbehindKeepMask(node.value);
+    if (keep.every(Boolean)) return;
+    node.value = applyMask(node.value, keep);
+    node.raw = JSON.stringify(node.value);
+  }
+  function stripTemplatePattern(tpl) {
+    var _a;
+    let flat = "";
+    const exprAt = [];
+    for (let q = 0; q < tpl.quasis.length; q++) {
+      const cooked = (_a = tpl.quasis[q].value.cooked) != null ? _a : tpl.quasis[q].value.raw;
+      for (let k = 0; k < cooked.length; k++) {
+        flat += cooked[k];
+        exprAt.push(-1);
+      }
+      if (q < tpl.expressions.length) {
+        flat += EXPR_PLACEHOLDER;
+        exprAt.push(q);
+      }
+    }
+    const keep = lookbehindKeepMask(flat);
+    if (keep.every(Boolean)) return;
+    const cookedParts = [];
+    const expressions = [];
+    let current2 = "";
+    for (let i = 0; i < flat.length; i++) {
+      if (!keep[i]) continue;
+      if (exprAt[i] === -1) {
+        current2 += flat[i];
+      } else {
+        cookedParts.push(current2);
+        current2 = "";
+        expressions.push(tpl.expressions[exprAt[i]]);
+      }
+    }
+    cookedParts.push(current2);
+    const quasis = cookedParts.map((cooked, idx) => ({
+      type: "TemplateElement",
+      tail: idx === cookedParts.length - 1,
+      value: { raw: rawFromCooked(cooked), cooked },
+      start: tpl.start,
+      end: tpl.end
+    }));
+    tpl.quasis = quasis;
+    tpl.expressions = expressions;
+  }
+  function stripRegExpArg(arg) {
+    if (!arg) return;
+    if (arg.type === "Literal") stripLiteralPattern(arg);
+    else if (arg.type === "TemplateLiteral") stripTemplatePattern(arg);
   }
   function isRegExpCallee(callee) {
     return callee.type === "Identifier" && callee.name === "RegExp";
@@ -7336,15 +7440,15 @@ var LegacyTranspiler = (() => {
     return {
       Literal(node) {
         if (node.regex) {
-          node.regex.pattern = node.regex.pattern.replace(LOOKBEHIND_RE, "");
+          node.regex.pattern = applyMask(node.regex.pattern, lookbehindKeepMask(node.regex.pattern));
           node.raw = "/".concat(node.regex.pattern, "/").concat(node.regex.flags);
         }
       },
       CallExpression(node) {
-        if (isRegExpCallee(node.callee)) stripStringPattern(node.arguments);
+        if (isRegExpCallee(node.callee)) stripRegExpArg(node.arguments[0]);
       },
       NewExpression(node) {
-        if (isRegExpCallee(node.callee)) stripStringPattern(node.arguments);
+        if (isRegExpCallee(node.callee)) stripRegExpArg(node.arguments[0]);
       }
     };
   };
@@ -7940,7 +8044,7 @@ var LegacyTranspiler = (() => {
   }
 
   // package.json
-  var version2 = "0.1.9";
+  var version2 = "0.1.10";
 
   // src/index.ts
   var options;
