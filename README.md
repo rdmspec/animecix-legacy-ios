@@ -1,5 +1,7 @@
 # AnimeciX iOS
 
+Buradaki efsane kodun sahibi [mgefimov](https://github.com/mgefimov)'dur. Ben sadece AnimeciX'e uyarladım.
+
 > [AnimeciX](https://animecix.tv)'i iOS'ta çalıştır.
 
 ## Çalışma Mantığı
