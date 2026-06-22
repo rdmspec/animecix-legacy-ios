@@ -83,8 +83,7 @@
 }
 
 - (void)injectCustomCSS {
-    NSString *css = @"button[data-testid='login-with-google'] { display: none !important; }"
-    "button[data-testid='login-with-google'] + p { display: none !important; }";
+    NSString *css = @"";
     NSString *js = [NSString stringWithFormat:
                     @"(function(){"
                     "var s=document.createElement('style');"
@@ -131,7 +130,7 @@
     [PolyfillsLoader injectPolyfillsIntoController:_webView.configuration.userContentController];
     [self injectMatchMediaAddEventListener];
     
-    [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://claude.ai"]]];
+    [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://animecix.tv"]]];
 //    [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://192.168.1.136:3000"]]];
 }
 
