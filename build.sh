@@ -7,7 +7,7 @@ SCHEME="ClaudeLegacy"
 BUILD_DIR="${PROJECT_DIR}/build"
 ARCHIVE_PATH="${BUILD_DIR}/ClaudeLegacy.xcarchive"
 OUTPUT_DIR="${BUILD_DIR}/output"
-IPA_NAME="Animecix.ipa"
+IPA_NAME="AnimeciX.ipa"
 
 echo "=== ClaudeLegacy IPA Builder ==="
 
