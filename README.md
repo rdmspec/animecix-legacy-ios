@@ -1,3 +1,5 @@
+Install from [this repo (rdmspec/gemini-legacy-ios)](https://github.com/rdmspec/gemini-legacy-ios/)
+---------------------------------
 # Gemini Legacy
 Original code owned by [mgefimov](https://github.com/mgefimov).
 
